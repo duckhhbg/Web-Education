@@ -6,10 +6,34 @@ vcap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 vcap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 
+def nothing(x):
+    pass
+
+
+# Khởi tạo thanh TackBars cho phép người dùng nhìn thấy và điều chỉnh giá trị
+def initializeTrackbars(initializeTrackbars=0):
+    cv2.namedWindow("Trackbars") # Đặt tên cho khung hiển thị
+    cv2.resizeWindow("Trackbars", 500, 80) # Đặt kích thước cho khung
+    cv2.createTrackbar("Threshold1", "Trackbars", 1024, 1280, nothing)
+    cv2.createTrackbar("Threshold2", "Trackbars", 720, 720, nothing)
+
+
+# Tạo trường hợp cho phép người dùng nhận thông số từ thanh TackBars
+def valTrackbars():
+    Threshold1 = cv2.getTrackbarPos("Threshold1", "Trackbars") # Để lấy giá trị hiện tại của thanh trượt.
+    Threshold2 = cv2.getTrackbarPos("Threshold2", "Trackbars")
+    src = Threshold1, Threshold2
+    return src # Trả về 1 giá trị
+
+
+initializeTrackbars()
+
+
 def Image():
     while True:
         ret, frame = vcap.read()
-        frame = cv2.resize(frame, [1024, 720])
+        thres = valTrackbars()  # Gọi lại đến hàm nhận giá trị từ TaskBar
+        frame = cv2.resize(frame, [thres[0], thres[1]])
         if not ret:
             print("Frame is empty")
             break
