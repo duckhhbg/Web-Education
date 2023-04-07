@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webcam Demo</title>
+  </head>
+  <body>
+    <h1>Webcam Demo</h1>
+    <img id="video_feed" src="{% url 'video_feed' %}" width="1024" height="720" />
+    <br>
+    <button onclick="capture()">Lưu ảnh</button>
+    <script>
+      function capture() {
+        window.location.href = "{% url 'capture' %}";
+      }
+    </script>
+  </body>
+</html>
