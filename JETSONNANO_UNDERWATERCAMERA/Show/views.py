@@ -43,11 +43,32 @@ def index(request):
     return render(request, 'index.html')
 
 def capture(request):
+    if request.method == 'POST':
+        GT_1 = request.POST['Value_1']
+        GT_2 = request.POST['Value_2']
+        GT_3 = request.POST['Value_3']
+        print('Đã nhận được giá trị 1: ', GT_1)
+        print('Đã nhận được giá trị 2: ', GT_2)
+        print('Đã nhận được giá trị 3: ', GT_3)
     ret, frame = vcap.read()
     localtime = time.localtime(time.time())
     read_time = str(localtime.tm_mday) + '-' + str(localtime.tm_mon) + '-' + str(
-                localtime.tm_year) + '--' + str(localtime.tm_hour) + 'h' + str(localtime.tm_min) + 'm' + str(localtime.tm_sec) + 's'
+                localtime.tm_year) + '--' + str(localtime.tm_hour) + 'h' + str(localtime.tm_min) + 'm' + str(localtime.tm_sec) + 's' + "__" + str(GT_1) + "__" + str(GT_2) + "__" + str(GT_3) + "__"
     file_name = 'static/CAMERA/image_' + read_time + '.jpg'
-    cv2.imwrite(file_name, frame)
+    if file_name is not None:
+        cv2.imwrite(file_name, frame)
+    else:
+        print("Có lỗi, không tìm thấy ảnh đầu vào!")
     Count()
     return redirect('index')
+
+
+def getValue(req):
+    if req.method == 'POST':
+        GT_1 = req.POST['Value_1']
+        GT_2 = req.POST['Value_2']
+        GT_3 = req.POST['Value_3']
+        print('Đã nhận được giá trị 1: ', GT_1)
+        print('Đã nhận được giá trị 2: ', GT_2)
+        print('Đã nhận được giá trị 3: ', GT_3)
+    return render(req, 'index.html')
