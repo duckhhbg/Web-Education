@@ -6,9 +6,10 @@ import cv2
 import os
 import datetime
 import pickle
+from .models import Auto_Camera
 
 # vcap = cv2.VideoCapture("rtsp://admin:admin@192.168.1.78:554/30", cv2.CAP_FFMPEG)
-vcap = cv2.VideoCapture(1)
+vcap = cv2.VideoCapture(0)
 vcap.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
 vcap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -99,4 +100,28 @@ def Auto(request):
         Counter = request.POST['Counter']
         print('Đã nhận được giá trị Timer: ', Timer)
         print('Đã nhận được giá trị Counter: ', Counter)
+        if not Timer or not Counter:
+            print("Thông báo: Cần nhập đầy đủ thông tin.")
+        else:
+            print("Nhận được đầy đủ thông tin rồi. Bắt đầu làm việc đây")
+            auto = Auto_Camera(Timers=Timer, Couters=Counter)
+            auto.save()
+            print("Đã lưu thông tin rồi đây")
+    return redirect('index')
+
+def Camera_Auto(request):
+    info = Auto_Camera.objects.values()
+    print('Thông tin nhận được: ', info)
+    queryset = Auto_Camera.objects.filter(id__in=[obj['id'] for obj in info])
+    for obj in queryset:
+        # truy xuất các trường trong đối tượng
+        id = obj.id
+        timers = obj.Timers
+        counters = obj.Couters
+        # sử dụng các giá trị đó để làm gì đó
+
+        print(f"Với {id} thì TIMERS là: {timers} và COUNTER là: {counters}")
+
+
+
     return redirect('index')
