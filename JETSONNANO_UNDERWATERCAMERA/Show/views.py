@@ -3,12 +3,15 @@ from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 from PIL import Image
 import cv2
-import time
 import os
+import datetime
+import pickle
 
-vcap = cv2.VideoCapture("rtsp://admin:admin@192.168.1.78:554/30", cv2.CAP_FFMPEG)
+# vcap = cv2.VideoCapture("rtsp://admin:admin@192.168.1.78:554/30", cv2.CAP_FFMPEG)
+vcap = cv2.VideoCapture(1)
 vcap.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
 vcap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
 
 def Count():
     folder_path = "static/CAMERA/"
@@ -23,6 +26,7 @@ def Count():
             pass
     print("Số lượng ảnh trong file là: ", count)
 
+
 def generate_frames():
     while True:
         ret, frame = vcap.read()
@@ -32,6 +36,7 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+
 @gzip.gzip_page
 def livefe(request):
     try:
@@ -39,36 +44,59 @@ def livefe(request):
     except:  # This is to handle when the client disconnects
         pass
 
+
 def index(request):
     return render(request, 'index.html')
 
-def capture(request):
+
+# def Auto(request):
+#     if request.method == 'POST':
+#         getTime = request.POST['getTime']
+#         Timer = request.POST['Timer']
+#         Counter = request.POST['Counter']
+#         print('Đã nhận được giá trị getTime: ', getTime)
+#         print('Đã nhận được giá trị Timer: ', Timer)
+#         print('Đã nhận được giá trị Counter: ', Counter)
+#         if not getTime or not Timer or not Counter:
+#             print("Thông báo: Cần nhập đầy đủ thông tin.")
+#         else:
+#             time_obj = datetime.datetime.strptime(getTime, '%H:%M')
+#             # Tính toán khoảng thời gian giữa thời gian hiện tại và thời gian trong biến getTime
+#             minutes = time_obj.hour * 60 + time_obj.minute
+#             print('Lấy về: ', minutes)
+#             # Lưu các giá trị vào file
+#             with open('data.pkl', 'wb') as f:
+#                 pickle.dump((getTime, Timer, Counter, minutes), f)
+#             setUpTime()
+#     return redirect('index')
+#
+#
+# def setUpTime():
+#     with open('data.pkl', 'rb') as f:
+#         getTime, Timer, Counter, minutes = pickle.load(f)
+#     GETTIME = int(minutes) + int(Timer)
+#     # while True:
+#     #     now = datetime.datetime.now()
+#     #     minute = now.minute
+#     #     hour = now.hour
+#     #     read_time = hour * 60 + minute
+#     #     print('Thực tế: ', read_time)
+#     #     LimitTime = GETTIME - read_time
+#     #     print('Khoảng thời gian còn lại: ', LimitTime)
+#     #     if(LimitTime > 0):
+#     #         return redirect('index')
+#     #     if(LimitTime <= 0):
+#     #         print("Đã hết thời gian rồi!!!!!!!!!!!!!!!")
+#     #         return redirect('index')
+#
+#     # time_diff = now - datetime.fromtimestamp(GETTIME)
+#     # print(f'Thời gian giữa thời điểm hiện tại và GETTIME là: {time_diff.total_seconds()} giây')
+
+def Auto(request):
+    global Timer, Counter
     if request.method == 'POST':
-        GT_1 = request.POST['Value_1']
-        GT_2 = request.POST['Value_2']
-        GT_3 = request.POST['Value_3']
-        print('Đã nhận được giá trị 1: ', GT_1)
-        print('Đã nhận được giá trị 2: ', GT_2)
-        print('Đã nhận được giá trị 3: ', GT_3)
-    ret, frame = vcap.read()
-    localtime = time.localtime(time.time())
-    read_time = str(localtime.tm_mday) + '-' + str(localtime.tm_mon) + '-' + str(
-                localtime.tm_year) + '--' + str(localtime.tm_hour) + 'h' + str(localtime.tm_min) + 'm' + str(localtime.tm_sec) + 's' + "__" + str(GT_1) + "__" + str(GT_2) + "__" + str(GT_3) + "__"
-    file_name = 'static/CAMERA/image_' + read_time + '.jpg'
-    if file_name is not None:
-        cv2.imwrite(file_name, frame)
-    else:
-        print("Có lỗi, không tìm thấy ảnh đầu vào!")
-    Count()
+        Timer = request.POST['Timer']
+        Counter = request.POST['Counter']
+        print('Đã nhận được giá trị Timer: ', Timer)
+        print('Đã nhận được giá trị Counter: ', Counter)
     return redirect('index')
-
-
-def getValue(req):
-    if req.method == 'POST':
-        GT_1 = req.POST['Value_1']
-        GT_2 = req.POST['Value_2']
-        GT_3 = req.POST['Value_3']
-        print('Đã nhận được giá trị 1: ', GT_1)
-        print('Đã nhận được giá trị 2: ', GT_2)
-        print('Đã nhận được giá trị 3: ', GT_3)
-    return render(req, 'index.html')
