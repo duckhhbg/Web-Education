@@ -22,6 +22,14 @@
         <h5 class="card-title mt-3 text-center justify-content-between">Chế độ tự động</h5>
         <form class="my-5" action="{% url 'Auto' %}" method="post" name="AutoFrom">
           {% csrf_token %}
+          <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10"> <input type="date" class="form-control" id="Clock_Date" name="Clock_Date"></div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputTime" class="col-sm-2 col-form-label">Time</label>
+            <div class="col-sm-10"> <input type="time" class="form-control" id="Clock_Time" name="Clock_Time"></div>
+          </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Timer: </span>
             <input type="number" class="form-control" id="Timer" name="Timer">
@@ -39,7 +47,22 @@
     </div>
   </div>
   <script>
-    function Call_Auto(){
+      function capture(){
+        var y = document.forms["AutoFrom"]["Timer"].value;
+        var z = document.forms["AutoFrom"]["Counter"].value;
+        if (y == "" || y == null) {
+            alert("Chưa điền thông tin TIMER");
+            return false;
+        }
+        if (z == "" || z == null) {
+            alert("Chưa điền thông tin COUNTER");
+            return false;
+        }
+        else{
+            window.location.href = "{% url 'Auto' %}";
+            Call_Auto()
+        }
+    }
       setInterval(function() {
         $.ajax({
             url: "/Camera_Auto",
@@ -47,8 +70,7 @@
               console.log("Hahahahhaha")
             }
         });
-      }, 600);
-    }
+      }, 60000000);
   </script>
 </body>
 </html>

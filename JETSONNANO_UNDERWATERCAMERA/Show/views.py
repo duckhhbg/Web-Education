@@ -94,34 +94,46 @@ def index(request):
 #     # print(f'Thời gian giữa thời điểm hiện tại và GETTIME là: {time_diff.total_seconds()} giây')
 
 def Auto(request):
-    global Timer, Counter
+    # now_Time = datetime.datetime.now()
+    # minute = now_Time.minute
+    # hour = now_Time.hour
+    # x = hour + ":" + minute
     if request.method == 'POST':
         Timer = request.POST['Timer']
         Counter = request.POST['Counter']
+        Clock_Time = request.POST['Clock_Time']
+        Clock_Date = request.POST['Clock_Date']
         print('Đã nhận được giá trị Timer: ', Timer)
         print('Đã nhận được giá trị Counter: ', Counter)
+        print('Thời gian nhận được là: ', Clock_Time)
+        print('Ngày nhận được là: ', Clock_Date)
         if not Timer or not Counter:
             print("Thông báo: Cần nhập đầy đủ thông tin.")
         else:
             print("Nhận được đầy đủ thông tin rồi. Bắt đầu làm việc đây")
-            auto = Auto_Camera(Timers=Timer, Couters=Counter)
+            auto = Auto_Camera(Timers=Timer, Couters=Counter, start_Time=Clock_Time, stat_Date=Clock_Date)
             auto.save()
             print("Đã lưu thông tin rồi đây")
     return redirect('index')
 
 def Camera_Auto(request):
     info = Auto_Camera.objects.values()
-    print('Thông tin nhận được: ', info)
-    queryset = Auto_Camera.objects.filter(id__in=[obj['id'] for obj in info])
-    for obj in queryset:
-        # truy xuất các trường trong đối tượng
-        id = obj.id
-        timers = obj.Timers
-        counters = obj.Couters
-        # sử dụng các giá trị đó để làm gì đó
-
-        print(f"Với {id} thì TIMERS là: {timers} và COUNTER là: {counters}")
-
-
-
+    # kiểm tra biến info có tồn tại hay không
+    if info:
+        # info tồn tại, thực hiện các thao tác tiếp theo ở đây
+        print("Thông tin nhận được: ", info)
+        print('Thông tin nhận được: ', info)
+        queryset = Auto_Camera.objects.filter(id__in=[obj['id'] for obj in info])
+        for obj in queryset:
+            # truy xuất các trường trong đối tượng
+            id = obj.id
+            timers = obj.Timers
+            counters = obj.Couters
+            time_clock = obj.start_Time
+            date_clock = obj.stat_Date
+            # sử dụng các giá trị đó để làm gì đó
+            print(f"Với {id} thì TIMERS là: {timers} và COUNTER là: {counters}, TIME là: {time_clock} và DATE là: {date_clock}")
+    else:
+        # info không tồn tại hoặc rỗng, thông báo lỗi hoặc xử lý theo yêu cầu
+        print("Lỗi: Không tìm thấy thông tin")
     return redirect('index')
