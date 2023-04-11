@@ -111,11 +111,7 @@ def Auto(request):
             print("Thông báo: Cần nhập đầy đủ thông tin.")
         else:
             print("Nhận được đầy đủ thông tin rồi. Bắt đầu làm việc đây")
-<<<<<<< HEAD
-            auto = Auto_Camera(Timers=Timer, Couters=Counter, start_Time=Clock_Time, stat_Date=Clock_Date)
-=======
             auto = Auto_Camera(Timers=Timer, Counters=Counter, start_Time=Clock_Time, stat_Date=Clock_Date)
->>>>>>> f22be88 (Duc Uplod)
             auto.save()
             print("Đã lưu thông tin rồi đây")
     return redirect('index')
@@ -132,7 +128,7 @@ def Camera_Auto(request):
             # truy xuất các trường trong đối tượng
             id = obj.id
             timers = obj.Timers
-            counters = obj.Couters
+            counters = obj.Counters
             time_clock = obj.start_Time
             date_clock = obj.stat_Date
             # sử dụng các giá trị đó để làm gì đó
