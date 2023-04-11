@@ -1,7 +1,6 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<<<<<<< HEAD
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -14,8 +13,6 @@
 </head>
 <body>
   <div class="">
-=======
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -29,18 +26,13 @@
 </head>
 
 <body>
-<<<<<<< HEAD
   <div class="flex-row">
->>>>>>> f22be88 (Duc Uplod)
-=======
   <div class="row">
->>>>>>> c0fe5eb (Duc)
     <div class="col-lg-8 mt-2 mx-2">
       <img id="video_feed" src="{% url 'video_feed' %}" width="1024" height="720" />
     </div>
 
     <div class="col-lg-3 mt-5 mx-5">
-<<<<<<< HEAD
       <div class="card">
         <h5 class="card-title mt-3 text-center justify-content-between">Chế độ tự động</h5>
         <form class="my-5" action="{% url 'Auto' %}" method="post" name="AutoFrom">
@@ -54,7 +46,7 @@
             <div class="col-sm-10"> <input type="time" class="form-control" id="Clock_Time" name="Clock_Time"></div>
           </div>
           <div class="input-group mb-3">
-=======
+
       <div class="card p-1 justify-content-start" style="display: flex;">
         <h5 class="card-title mt-3 text-center justify-content-between">Chế độ tự động</h5>
         <form class="my-5" action="{% url 'Auto' %}" method="post" name="AutoFrom">
@@ -70,7 +62,7 @@
             </div>
           </div>
           <div class="mt-1 input-group mb-3">
->>>>>>> f22be88 (Duc Uplod)
+
             <span class="input-group-text">Timer: </span>
             <input type="number" class="form-control" id="Timer" name="Timer">
           </div>
@@ -87,7 +79,7 @@
     </div>
   </div>
   <script>
-<<<<<<< HEAD
+
       function capture(){
         var y = document.forms["AutoFrom"]["Timer"].value;
         var z = document.forms["AutoFrom"]["Counter"].value;
@@ -114,7 +106,7 @@
       }, 60000000);
   </script>
 </body>
-=======
+
     function capture() {
       var y = document.forms["AutoFrom"]["Timer"].value;
       var z = document.forms["AutoFrom"]["Counter"].value;
@@ -141,6 +133,4 @@
     }, 60000000);
   </script>
 </body>
-
->>>>>>> f22be88 (Duc Uplod)
 </html>
