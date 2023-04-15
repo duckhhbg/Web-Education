@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container">
+    {% if user.access == 'GV' or user.access == 'AD'%}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form__group">
+            {{form}}
+        </div>
+        <div class="form__action">
+            <button class="btn btn--main" type="submit">Tải lên</button>
+        </div>
+    </form>
+        {% for File in files %}
+                {% if File.fkchapter.id == chapters.id %}
+                <h1>{{File.file.name}}</h1>
+                <a class="button button1" href="{{File.file.url}}">Tải xuống</a>
+                {% endif %}
+        {% endfor %}
+    {% elif user.access == 'SV' %}
+        {% for File in files %}
+            {% if File.fkchapter.id == chapters.id %}
+            <h1>{{File.file.name}}</h1>
+            <a class="button button1" href="{{File.file.url}}">Tải xuống</a>
+            {% else %}
+            <h1>Hiện tại giáo viên chưa tải tải liệu!!</h1>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h1>Không có dữ liệu!!</h1>
+    {% endif %}
+</div>
+
+{% endblock content %}

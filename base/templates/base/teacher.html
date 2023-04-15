@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="listsub">
+    
+{% for user in Users %}
+    {% if user.access == 'GV'%}    
+    <div class="subjectListsubject">
+                <div class="subjectListsubject__header">
+                    <a href="{% url 'user-profile' user.id %}" class="subjectListsubject__author">
+                        <div class="avatar avatar--small">
+                            <img src="{{user.avatar.url}}"/>
+                        </div>
+                        <span>Giáo viên: {{user.name}}</span>
+                    </a>
+                </div>
+    </div>    
+    {% endif %}
+{% endfor %}
+    
+</div>
+{% endblock content %}
